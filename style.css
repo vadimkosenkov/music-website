@@ -1,0 +1,92 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.header {
+  width: 100%;
+  min-height: 80px;
+  height: 100%;
+  display: flex;
+}
+.header__logo-wrap {
+  background-color: #ea2e49;
+  width: 15%;
+  min-height: 80px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.header__playlist-wrap {
+  background-color: #77c4d3;
+  width: 15%;
+  min-height: 80px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.header__playlist {
+  display: flex;
+  align-items: end;
+}
+
+.header__playlist-text {
+  text-transform: uppercase;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+}
+.header__playlist-img {
+  margin-right: 10px;
+}
+
+.header__center-wrap {
+  width: 100%;
+  min-height: 80px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.header__user-bar-wrap {
+  width: 50%;
+  margin: 0 15px;
+}
+
+.header__search-bar-wrap {
+  width: 50%;
+  margin: 0 15px;
+  border: 1px solid rgb(170, 164, 164);
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.header__search-bar-input {
+  min-height: 50px;
+  width: 88%;
+  align-items: center;
+  margin: 0 15px;
+  outline: none;
+  border: none;
+}
+
+.header__user-bar-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
+
+.header__user-bar-icon {
+  border-radius: 50%;
+  margin-right: 15px;
+}
+
+.header__user-bar-name {
+  font-size: 16px;
+  color: #b3b3b3;
+  text-transform: uppercase;
+  font-weight: bold;
+}
