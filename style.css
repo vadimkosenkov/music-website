@@ -3,10 +3,13 @@
   padding: 0;
   box-sizing: border-box;
 }
+.app {
+  height: 100vh;
+  overflow: hidden;
+}
 .header {
   width: 100%;
   min-height: 80px;
-  height: 100%;
   display: flex;
 }
 .header__logo-wrap {
@@ -43,7 +46,7 @@
 }
 
 .header__center-wrap {
-  width: 100%;
+  width: 70%;
   min-height: 80px;
   height: 100%;
   display: flex;
@@ -89,4 +92,71 @@
   color: #b3b3b3;
   text-transform: uppercase;
   font-weight: bold;
+}
+
+.main {
+  width: 100%;
+  display: flex;
+  min-height: 100%;
+}
+.main__nav,
+.main__playlist {
+  background-color: #eaeaea;
+  width: 15%;
+  padding: 30px 0;
+}
+
+.main__content {
+  width: 70%;
+  padding: 0 15px;
+}
+
+.nav__item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  line-height: 50px;
+  padding-left: 15px;
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+.nav__item:hover,
+.nav__item[active="true"] {
+  background-color: #ead7da;
+  color: #ea2e49;
+}
+
+.nav__item:hover::after {
+  content: "";
+  position: absolute;
+  display: block;
+  height: 50px;
+  width: 3px;
+  background-color: #ea2e49;
+  left: 0;
+  z-index: 1;
+}
+.nav__item-endSection {
+  margin-bottom: 60px;
+}
+
+.nav__img-wrap {
+  width: 24px;
+  margin-right: 10px;
+  display: flex;
+}
+.nav__text {
+  text-transform: uppercase;
+  font-size: 16px;
+  letter-spacing: 1px;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+@media (max-width: 1490px) {
+  .nav__text {
+    letter-spacing: 0px;
+    font-size: 12px;
+  }
 }
