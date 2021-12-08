@@ -98,7 +98,6 @@
 .main {
   width: 100%;
   display: flex;
-  min-height: 100%;
 }
 .main__nav,
 .main__playlist {
@@ -186,6 +185,7 @@
   line-height: 24px;
   color: #1e2029;
   text-transform: capitalize;
+  transition: 0.2s;
 }
 
 .playlist__group {
@@ -193,6 +193,7 @@
   line-height: 24px;
   color: #b3b3b3;
   text-transform: capitalize;
+  transition: 0.2s;
 }
 
 .content__banner {
@@ -222,4 +223,59 @@
 .content__image:hover {
   transform: scale(0.97);
   opacity: 0.85;
+}
+
+.footer__image {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+}
+
+.playlist__footer {
+  width: 15%;
+  position: absolute;
+  bottom: 0;
+  min-height: 200px;
+  background-color: #e1e1e1;
+  text-align: center;
+}
+
+.playlist__footer img {
+  margin-top: 10px;
+  width: 50%;
+}
+.playlist__footer button {
+  border: 1px solid #ea2e49;
+  font-size: 18px;
+  color: #ea2e49;
+  border-radius: 5px;
+  background-color: transparent;
+  cursor: pointer;
+  padding: 5px;
+}
+
+@media (max-width: 1490px) {
+  .nav__text {
+    letter-spacing: 0px;
+    font-size: 10px;
+  }
+  .playlist__img {
+    display: none;
+  }
+  .playlist__item {
+    justify-content: center;
+    text-align: center;
+  }
+}
+@media (max-width: 1024px) {
+  .nav__text,
+  .playlist__info {
+    display: none;
+  }
+  .nav__item {
+    justify-content: center;
+  }
+  .playlist__img {
+    display: inline;
+  }
 }
