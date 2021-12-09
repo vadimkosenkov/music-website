@@ -3,6 +3,13 @@
   padding: 0;
   box-sizing: border-box;
   transition: 0.2s;
+  font-family: "Proxima Nova", sans-serif;
+}
+@font-face {
+  font-family: "Proxima Nova";
+  src: url("./assets/fonts/ProximaNova-Regular.woff"),
+    url("./assets/fonts/ProximaNova-Bold.woff");
+  font-style: normal;
 }
 .app {
   height: 100vh;
