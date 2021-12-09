@@ -109,16 +109,30 @@ for (let i = 0; i < playlistCollection.length; i++) {
   playlistGroup.classList.add("playlist__group");
   playlistSong.classList.add("playlist__song");
 
+  playlistGroup.innerText = playlistCollection[i].group;
+  playlistSong.innerText = playlistCollection[i].song;
+  playlistImg.setAttribute("src", playlistCollection[i].src);
+
   playlistInfo.append(playlistSong);
   playlistInfo.append(playlistGroup);
   playlistItem.append(playlistImg);
   playlistItem.append(playlistInfo);
   playlist.append(playlistItem);
-
-  playlistGroup.innerText = playlistCollection[i].group;
-  playlistSong.innerText = playlistCollection[i].song;
-  playlistImg.setAttribute("src", playlistCollection[i].src);
 }
+const playlistFooter = document.createElement("div");
+const playlistFooterImg = document.createElement("img");
+const playlistFooterBtn = document.createElement("button");
+
+playlistFooter.classList.add("playlist__footer");
+playlistFooterImg.setAttribute(
+  "src",
+  "./assets/main/playlist/take-music-everywhere.png"
+);
+playlistFooterImg.setAttribute("alt", "text: Take music everywhere");
+playlistFooterBtn.innerText = "Download app";
+playlistFooter.append(playlistFooterImg);
+playlistFooter.append(playlistFooterBtn);
+playlist.append(playlistFooter);
 
 for (let i = 0; i < contentCollection.length; i++) {
   const contentImage = document.createElement("img");
