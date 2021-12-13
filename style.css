@@ -190,7 +190,7 @@
   overflow: auto;
 }
 .content__wrap {
-  padding: 0 15px;
+  padding: 0 15px 15px 15px;
   display: grid;
   grid-template-rows: auto;
   grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -227,7 +227,6 @@
   cursor: pointer;
   padding: 5px;
 }
-
 .footer {
   position: fixed;
   left: 0;
@@ -236,8 +235,139 @@
   width: 100%;
   background-color: #1e2029;
 }
+.player {
+  display: flex;
+}
+.player__song-info {
+  width: 15%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 15px;
+}
+.player__menu {
+  width: 70%;
+  display: flex;
+  align-items: center;
+}
+.player__volume {
+  width: 15%;
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+}
+.player__volume img {
+  width: 30px;
+  transform: translate(0px, 2px);
+  cursor: pointer;
+  margin: 0 15px;
+}
+.player__volume img:hover {
+  transform: scale(0.85);
+}
 
-.footer__player {
+.player__control {
+  width: 15%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 15px;
+}
+.player__control img {
+  margin: 0 10px;
+  cursor: pointer;
+  width: 30px;
+}
+.player__control img:hover {
+  transform: scale(0.85);
+}
+.player__progress-wrap {
+  width: 70%;
+  display: flex;
+  align-items: center;
+  color: #fff;
+  padding: 0 15px;
+}
+.player__progress {
+  border-radius: 50%;
+  width: 100%;
+  height: 8px;
+  margin: 0 10px;
+  cursor: pointer;
+}
+.player__progress::-webkit-progress-bar {
+  border-radius: 20px;
+  background-color: #333745;
+}
+.player__progress::-webkit-progress-value {
+  background-color: #ea2e49;
+  border-radius: 20px;
+}
+.player__progress::-moz-progress-bar {
+  border-radius: 20px;
+  background-color: #333745;
+}
+.player__setting {
+  width: 15%;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  padding: 0 15px;
+}
+.player__setting img {
+  margin: 0 15px;
+  cursor: pointer;
+  width: 30px;
+}
+.player__setting img:hover {
+  transform: scale(0.85);
+}
+.player__item {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+}
+.player__info {
+  display: flex;
+  flex-direction: column;
+}
+.player__img {
+  border-radius: 50%;
+  height: 50px;
+  width: 50px;
+  object-fit: cover;
+  margin-right: 15px;
+}
+.player__song {
+  font-size: 16px;
+  line-height: 24px;
+  color: #fff;
+  text-transform: capitalize;
+}
+.player__group {
+  font-size: 14px;
+  line-height: 24px;
+  color: #b3b3b3;
+  text-transform: capitalize;
+}
+.player__progress-volume {
+  border-radius: 20px;
+  width: 100%;
+  height: 8px;
+  margin: 0 10px;
+  cursor: pointer;
+}
+.player__progress-volume::-webkit-progress-bar {
+  border-radius: 20px;
+  background-color: #333745;
+}
+.player__progress-volume::-webkit-progress-value {
+  background-color: #77c4d3;
+  border-radius: 20px;
+}
+.player__progress-volume::-moz-progress-bar {
+  border-radius: 20px;
+  background-color: #333745;
 }
 
 @media (max-width: 1490px) {
