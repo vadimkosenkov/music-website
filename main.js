@@ -1,6 +1,7 @@
 const nav = document.querySelector(".nav");
 const playlist = document.querySelector(".playlist");
 const contentWrap = document.querySelector(".content__wrap");
+const playlistItems = document.querySelector(".playlist__items");
 
 const navCollection = [
   { src: "./assets/main/nav/top-songs.png", text: "top songs" },
@@ -117,7 +118,8 @@ for (let i = 0; i < playlistCollection.length; i++) {
   playlistInfo.append(playlistGroup);
   playlistItem.append(playlistImg);
   playlistItem.append(playlistInfo);
-  playlist.append(playlistItem);
+  playlistItems.append(playlistItem);
+  playlist.append(playlistItems);
 }
 const playlistFooter = document.createElement("div");
 const playlistFooterImg = document.createElement("img");

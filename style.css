@@ -95,19 +95,25 @@
 .main {
   width: 100%;
   display: flex;
-  height: calc(100vh - 80px);
+  height: calc(100vh - 160px);
 }
 .main__nav,
 .main__playlist {
   background-color: #eaeaea;
   width: 15%;
-  padding: 30px 0;
+  padding-top: 30px;
+}
+.main__playlist {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: auto;
 }
 .nav__item {
   display: flex;
   align-items: center;
   margin-bottom: 15px;
-  line-height: 50px;
+  min-height: 50px;
   padding-left: 15px;
   cursor: pointer;
 }
@@ -149,6 +155,9 @@
   padding: 0 25px;
   cursor: pointer;
 }
+.playlist__items {
+  overflow: auto;
+}
 .playlist__info {
   display: flex;
   flex-direction: column;
@@ -183,7 +192,7 @@
 .content__wrap {
   padding: 0 15px;
   display: grid;
-  grid-template-rows: 1fr 1fr 100px;
+  grid-template-rows: auto;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-gap: 15px;
 }
@@ -197,16 +206,13 @@
   transform: scale(0.97);
   opacity: 0.85;
 }
-.footer__image {
-  width: 100%;
-  position: absolute;
-  bottom: 0;
-}
+
 .playlist__footer {
-  width: 100%;
-  height: 100%;
   background-color: #e1e1e1;
-  text-align: center;
+  padding-bottom: 10%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .playlist__footer img {
   margin-top: 10%;
@@ -221,6 +227,19 @@
   cursor: pointer;
   padding: 5px;
 }
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  min-height: 80px;
+  width: 100%;
+  background-color: #1e2029;
+}
+
+.footer__player {
+}
+
 @media (max-width: 1490px) {
   .nav__text {
     letter-spacing: 0px;
@@ -236,7 +255,7 @@
   }
   .main__nav,
   .main__playlist {
-    padding: 20px 0;
+    padding-top: 20px;
   }
 }
 @media (max-width: 1024px) {
@@ -248,6 +267,7 @@
   .nav__item {
     justify-content: center;
     padding: 0;
+    margin: 0;
   }
   .playlist__img {
     display: inline;
@@ -257,10 +277,6 @@
   }
   .header__playlist-img {
     margin: 0;
-  }
-  .playlist__footer button {
-    font-size: 12px;
-    padding: 3px;
   }
   .header__logo-wrap img {
     width: 50px;
@@ -279,7 +295,7 @@
   .main {
     width: 100%;
     display: flex;
-    height: calc(100vh - 40px);
+    height: calc(100vh - 120px);
   }
   .playlist__footer button {
     font-size: 8px;
@@ -287,6 +303,15 @@
     width: 80%;
   }
   .nav__img-wrap {
+    margin: 0;
+  }
+  .main__nav {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-bottom: 80px;
+  }
+  .nav__item {
     margin: 0;
   }
 }
