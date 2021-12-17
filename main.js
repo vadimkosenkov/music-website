@@ -13,12 +13,15 @@ const playerGroup = document.querySelector(".player__group");
 const playerNextBtn = document.querySelector(".player__next-btn");
 const playerPrevBtn = document.querySelector(".player__previous-btn");
 const playerRepeatBtn = document.querySelector(".player__repeat");
+const playerRandomBtn = document.querySelector(".player__random");
 
 const footer = document.querySelector(".footer");
 
-let isPaused;
-let songIndex;
-let data;
+let data,
+  songIndex,
+  isPaused = false,
+  isRepeat = false,
+  isRandom = false;
 
 const readableDuration = (seconds) => {
   sec = Math.floor(seconds);
@@ -49,6 +52,7 @@ const playAudio = (song, group, img, uri, i) => {
     audioLoadedData(song, group, img)
   );
 };
+
 const audioLoadedData = (song, group, img) => {
   songDuration.innerText = readableDuration(audioPlayer.duration);
   playerProgress.max = audioPlayer.duration;
@@ -262,7 +266,7 @@ playerNextBtn.addEventListener("click", () => {
   isPaused = false;
   playerPauseBtn.src = "./assets/footer/player/pause.png";
 
-  if (songIndex !== data.length - 1) {
+  if (songIndex !== data.length - 1 && !isRandom) {
     playAudio(
       data[songIndex + 1].title,
       data[songIndex + 1].subtitle,
@@ -270,6 +274,8 @@ playerNextBtn.addEventListener("click", () => {
       data[songIndex + 1].hub.actions[1].uri,
       ++songIndex
     );
+  } else if (isRandom) {
+    playRandomAudio();
   } else {
     audioPlayer.pause();
     playerPauseBtn.src = "./assets/main/content/play.png";
@@ -282,7 +288,7 @@ playerPrevBtn.addEventListener("click", () => {
   audioPlayer.pause();
   isPaused = false;
   playerPauseBtn.src = "./assets/footer/player/pause.png";
-  if (songIndex !== 0) {
+  if (songIndex !== 0 && !isRandom) {
     playAudio(
       data[songIndex - 1].title,
       data[songIndex - 1].subtitle,
@@ -290,6 +296,8 @@ playerPrevBtn.addEventListener("click", () => {
       data[songIndex - 1].hub.actions[1].uri,
       --songIndex
     );
+  } else if (isRandom) {
+    playRandomAudio();
   } else {
     audioPlayer.pause();
     playerPauseBtn.src = "./assets/main/content/play.png";
@@ -297,3 +305,37 @@ playerPrevBtn.addEventListener("click", () => {
     alert("This is the start of the playlist");
   }
 });
+
+playerRepeatBtn.addEventListener("click", () => {
+  isRepeat = !isRepeat;
+  audioPlayer.loop = isRepeat;
+  if (isRepeat) {
+    playerRepeatBtn.style.opacity = "1";
+  } else {
+    playerRepeatBtn.style.opacity = "0.3";
+  }
+});
+
+playerRandomBtn.addEventListener("click", () => {
+  isRandom = !isRandom;
+  if (isRandom) {
+    playerRandomBtn.style.opacity = "1";
+  } else {
+    playerRandomBtn.style.opacity = "0.3";
+  }
+});
+
+const getRandomInt = (max) => {
+  return Math.floor(Math.random() * Math.floor(max));
+};
+
+const playRandomAudio = () => {
+  songIndex = getRandomInt(data.length);
+  playAudio(
+    data[songIndex].title,
+    data[songIndex].subtitle,
+    data[songIndex].images.coverart,
+    data[songIndex].hub.actions[1].uri,
+    songIndex
+  );
+};
