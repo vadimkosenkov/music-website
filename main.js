@@ -14,7 +14,6 @@ const playerNextBtn = document.querySelector(".player__next-btn");
 const playerPrevBtn = document.querySelector(".player__previous-btn");
 const playerRepeatBtn = document.querySelector(".player__repeat");
 const playerRandomBtn = document.querySelector(".player__random");
-
 const footer = document.querySelector(".footer");
 
 let data,
@@ -61,7 +60,7 @@ const audioLoadedData = (song, group, img) => {
   playerGroup.innerText = group;
 };
 
-const pauseSong = () => {
+const pauseAudio = () => {
   isPaused = !isPaused;
   if (isPaused) {
     audioPlayer.pause();
@@ -75,7 +74,11 @@ const pauseSong = () => {
 const progressMove = () => {
   currentDuration.innerText = readableDuration(audioPlayer.currentTime);
   playerProgress.value = audioPlayer.currentTime;
-  requestAnimationFrame(progressMove);
+  if (audioPlayer.ended) {
+    playNextAudio();
+  } else {
+    requestAnimationFrame(progressMove);
+  }
 };
 
 const createHoverOverlay = ({ title, subtitle, images, hub }, i) => {
@@ -83,13 +86,23 @@ const createHoverOverlay = ({ title, subtitle, images, hub }, i) => {
   const hoverInfo = document.createElement("div");
   const hoverTrack = document.createElement("div");
   const hoverRatingWrap = document.createElement("div");
-  const hoverRating = document.createElement("img");
+  const hoverRating = document.createElement("div");
+  const hoverRatingHearts = document.createElement("div");
+  const hoverRatingHeartWhite = document.createElement("img");
+  const hoverRatingHeartEmpty = document.createElement("img");
+  const hoverRatingNumber = document.createElement("div");
   const hoverGroup = document.createElement("div");
   const hoverSong = document.createElement("div");
   const playBtn = document.createElement("img");
 
-  playBtn.setAttribute("src", "./assets/main/content/play.png");
-  hoverRating.setAttribute("src", "./assets/main/content/rating.png");
+  hoverRatingHeartWhite.src = "./assets/main/content/rating-icon-white.png";
+  hoverRatingHeartEmpty.src = "./assets/main/content/rating-icon-empty.png";
+  playBtn.src = "./assets/main/content/play.png";
+
+  hoverRating.classList.add("content__hover-rating");
+  hoverRatingHearts.classList.add("content__hover-rating-hearts");
+  hoverRatingHeartEmpty.classList.add("content__hover-rating-heart-empty");
+  hoverRatingNumber.classList.add("content__hover-rating-number");
 
   playBtn.classList.add("content__hover-play");
   hoverTrack.classList.add("content__hover-track");
@@ -99,7 +112,12 @@ const createHoverOverlay = ({ title, subtitle, images, hub }, i) => {
 
   hoverGroup.innerText = subtitle;
   hoverSong.innerText = title;
+  hoverRatingNumber.innerText = i < 9 ? `#0${++i}` : `#${++i}`;
 
+  hoverRatingHearts.append(hoverRatingHeartWhite);
+  hoverRatingHearts.append(hoverRatingHeartEmpty);
+  hoverRating.append(hoverRatingHearts);
+  hoverRating.append(hoverRatingNumber);
   hoverTrack.append(hoverGroup);
   hoverTrack.append(hoverSong);
   hoverInfo.append(hoverTrack);
@@ -234,8 +252,6 @@ const createContentCollection = ({ tracks }) => {
   }
 };
 
-playerPauseBtn.addEventListener("click", pauseSong);
-
 const getData = async () => {
   try {
     const response = await fetch(
@@ -261,7 +277,32 @@ const getData = async () => {
 };
 getData();
 
-playerNextBtn.addEventListener("click", () => {
+playerPauseBtn.addEventListener("click", () => pauseAudio());
+
+playerNextBtn.addEventListener("click", () => playNextAudio());
+
+playerPrevBtn.addEventListener("click", () => playPrevAudio());
+
+playerRepeatBtn.addEventListener("click", () => toggleRepeat());
+
+playerRandomBtn.addEventListener("click", () => toggleRandom());
+
+const getRandomInt = (max) => {
+  return Math.floor(Math.random() * Math.floor(max));
+};
+
+const playRandomAudio = () => {
+  songIndex = getRandomInt(data.length);
+  playAudio(
+    data[songIndex].title,
+    data[songIndex].subtitle,
+    data[songIndex].images.coverart,
+    data[songIndex].hub.actions[1].uri,
+    songIndex
+  );
+};
+
+const playNextAudio = () => {
   audioPlayer.pause();
   isPaused = false;
   playerPauseBtn.src = "./assets/footer/player/pause.png";
@@ -282,9 +323,9 @@ playerNextBtn.addEventListener("click", () => {
     isPaused = true;
     alert("Playlist is empty");
   }
-});
+};
 
-playerPrevBtn.addEventListener("click", () => {
+const playPrevAudio = () => {
   audioPlayer.pause();
   isPaused = false;
   playerPauseBtn.src = "./assets/footer/player/pause.png";
@@ -304,9 +345,9 @@ playerPrevBtn.addEventListener("click", () => {
     isPaused = true;
     alert("This is the start of the playlist");
   }
-});
+};
 
-playerRepeatBtn.addEventListener("click", () => {
+const toggleRepeat = () => {
   isRepeat = !isRepeat;
   audioPlayer.loop = isRepeat;
   if (isRepeat) {
@@ -314,28 +355,13 @@ playerRepeatBtn.addEventListener("click", () => {
   } else {
     playerRepeatBtn.style.opacity = "0.3";
   }
-});
+};
 
-playerRandomBtn.addEventListener("click", () => {
+const toggleRandom = () => {
   isRandom = !isRandom;
   if (isRandom) {
     playerRandomBtn.style.opacity = "1";
   } else {
     playerRandomBtn.style.opacity = "0.3";
   }
-});
-
-const getRandomInt = (max) => {
-  return Math.floor(Math.random() * Math.floor(max));
-};
-
-const playRandomAudio = () => {
-  songIndex = getRandomInt(data.length);
-  playAudio(
-    data[songIndex].title,
-    data[songIndex].subtitle,
-    data[songIndex].images.coverart,
-    data[songIndex].hub.actions[1].uri,
-    songIndex
-  );
 };

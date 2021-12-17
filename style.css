@@ -7,8 +7,10 @@
 }
 @font-face {
   font-family: "Proxima Nova";
+  font-family: "Letrista Script";
   src: url("./assets/fonts/ProximaNova-Regular.woff"),
     url("./assets/fonts/ProximaNova-Bold.woff");
+  src: url("./assets/fonts/LetristaScript.otf");
   font-style: normal;
 }
 .app {
@@ -240,8 +242,22 @@
 .content__hover-rating-wrap {
   text-align: center;
 }
-.content__hover-info img {
-  width: 80%;
+.content__hover-rating {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.content__hover-rating-hearts {
+  display: flex;
+  justify-content: start;
+}
+.content__hover-rating-heart-empty {
+  margin-left: 5%;
+}
+.content__hover-rating-number {
+  font-family: "Letrista Script", sans-serif;
+  font-size: 28px;
+  color: #ea2e49;
 }
 
 .content__image-wrap {
@@ -380,7 +396,6 @@
 .player__img {
   border-radius: 50%;
   width: 50px;
-  /* height: 50px; */
   object-fit: cover;
   margin-right: 15px;
 }
