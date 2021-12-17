@@ -2,11 +2,32 @@ const nav = document.querySelector(".nav");
 const playlist = document.querySelector(".playlist");
 const contentWrap = document.querySelector(".content__wrap");
 const playlistItems = document.querySelector(".playlist__items");
-const pauseBtn = document.querySelector(".player__pause-btn");
+const playerPauseBtn = document.querySelector(".player__pause-btn");
 const playerProgress = document.querySelector(".player__progress");
 const audioPlayer = document.querySelector(".audioPlayer");
-const pause = document.querySelector(".player__pause-btn");
-let isPaused = false;
+const currentDuration = document.querySelector(".player__current-duration");
+const songDuration = document.querySelector(".player__song-duration");
+const playerImg = document.querySelector(".player__img");
+const playerSong = document.querySelector(".player__song");
+const playerGroup = document.querySelector(".player__group");
+const playerNextBtn = document.querySelector(".player__next-btn");
+const playerPrevBtn = document.querySelector(".player__previous-btn");
+const playerRepeatBtn = document.querySelector(".player__repeat");
+
+const footer = document.querySelector(".footer");
+
+let isPaused;
+let songIndex;
+let data;
+
+const readableDuration = (seconds) => {
+  sec = Math.floor(seconds);
+  min = Math.floor(sec / 60);
+  min = min >= 10 ? min : "0" + min;
+  sec = Math.floor(sec % 60);
+  sec = sec >= 10 ? sec : "0" + sec;
+  return min + ":" + sec;
+};
 
 const navCollection = [
   { src: "./assets/main/nav/top-songs.png", text: "top songs" },
@@ -19,32 +40,41 @@ const navCollection = [
   { src: "./assets/main/nav/friends.png", text: "friends" },
 ];
 
-const playAudio = (uri) => {
+const playAudio = (song, group, img, uri, i) => {
+  songIndex = i;
   audioPlayer.src = uri;
-  audioPlayer.addEventListener(
-    "loadedmetadata",
-    () => (playerProgress.max = audioPlayer.duration)
-  );
   audioPlayer.play();
   progressMove();
+  audioPlayer.addEventListener("loadedmetadata", () =>
+    audioLoadedData(song, group, img)
+  );
 };
+const audioLoadedData = (song, group, img) => {
+  songDuration.innerText = readableDuration(audioPlayer.duration);
+  playerProgress.max = audioPlayer.duration;
+  playerImg.src = img;
+  playerSong.innerText = song;
+  playerGroup.innerText = group;
+};
+
 const pauseSong = () => {
   isPaused = !isPaused;
   if (isPaused) {
     audioPlayer.pause();
-    pause.src = "./assets/main/content/play.png";
+    playerPauseBtn.src = "./assets/main/content/play.png";
   } else {
     audioPlayer.play();
-    pause.src = "./assets/footer/player/pause.png";
+    playerPauseBtn.src = "./assets/footer/player/pause.png";
   }
 };
 
 const progressMove = () => {
+  currentDuration.innerText = readableDuration(audioPlayer.currentTime);
   playerProgress.value = audioPlayer.currentTime;
   requestAnimationFrame(progressMove);
 };
 
-const createHoverOverlay = ({ title, subtitle, hub }) => {
+const createHoverOverlay = ({ title, subtitle, images, hub }, i) => {
   const hoverOverlay = document.createElement("div");
   const hoverInfo = document.createElement("div");
   const hoverTrack = document.createElement("div");
@@ -74,9 +104,20 @@ const createHoverOverlay = ({ title, subtitle, hub }) => {
   hoverOverlay.append(playBtn);
   hoverOverlay.append(hoverInfo);
 
-  playBtn.addEventListener("click", () => playAudio(hub.actions[1].uri));
+  playBtn.addEventListener("click", () => {
+    isPaused = false;
+    playerPauseBtn.src = "./assets/footer/player/pause.png";
+    playerTransition();
+    playAudio(title, subtitle, images.coverart, hub.actions[1].uri, i);
+  });
 
   return hoverOverlay;
+};
+
+const playerTransition = () => {
+  const playlistFooter = document.querySelector(".playlist__footer");
+  footer.style.transform = "translate(0,0)";
+  playlistFooter.style.transform = "translate(0,-80px)";
 };
 
 const createPlaylistFooter = () => {
@@ -184,12 +225,12 @@ const createContentCollection = ({ tracks }) => {
     contentImage.setAttribute("alt", "image: artist");
 
     contentImageWrap.append(contentImage);
-    contentImageWrap.append(createHoverOverlay(tracks[i]));
+    contentImageWrap.append(createHoverOverlay(tracks[i], i));
     contentWrap.append(contentImageWrap);
   }
 };
 
-pauseBtn.addEventListener("click", pauseSong);
+playerPauseBtn.addEventListener("click", pauseSong);
 
 const getData = async () => {
   try {
@@ -205,7 +246,8 @@ const getData = async () => {
       }
     );
     const json = await response.json();
-    console.log(json);
+    data = json.tracks;
+    console.log(data);
     createContentCollection(json);
     createPlaylistCollection(json);
     createNavCollection();
@@ -214,3 +256,44 @@ const getData = async () => {
   }
 };
 getData();
+
+playerNextBtn.addEventListener("click", () => {
+  audioPlayer.pause();
+  isPaused = false;
+  playerPauseBtn.src = "./assets/footer/player/pause.png";
+
+  if (songIndex !== data.length - 1) {
+    playAudio(
+      data[songIndex + 1].title,
+      data[songIndex + 1].subtitle,
+      data[songIndex + 1].images.coverart,
+      data[songIndex + 1].hub.actions[1].uri,
+      ++songIndex
+    );
+  } else {
+    audioPlayer.pause();
+    playerPauseBtn.src = "./assets/main/content/play.png";
+    isPaused = true;
+    alert("Playlist is empty");
+  }
+});
+
+playerPrevBtn.addEventListener("click", () => {
+  audioPlayer.pause();
+  isPaused = false;
+  playerPauseBtn.src = "./assets/footer/player/pause.png";
+  if (songIndex !== 0) {
+    playAudio(
+      data[songIndex - 1].title,
+      data[songIndex - 1].subtitle,
+      data[songIndex - 1].images.coverart,
+      data[songIndex - 1].hub.actions[1].uri,
+      --songIndex
+    );
+  } else {
+    audioPlayer.pause();
+    playerPauseBtn.src = "./assets/main/content/play.png";
+    isPaused = true;
+    alert("This is the start of the playlist");
+  }
+});
