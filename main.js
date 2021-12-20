@@ -17,13 +17,16 @@ const playerNextBtn = document.querySelector(".player__next-btn");
 const playerPrevBtn = document.querySelector(".player__previous-btn");
 const playerRepeatBtn = document.querySelector(".player__repeat");
 const playerRandomBtn = document.querySelector(".player__random");
+const playerVolumeBtn = document.querySelector(".player__volume-btn");
 const footer = document.querySelector(".footer");
 
 let data,
   songIndex,
+  volume = 0.5,
   isPaused = false,
   isRepeat = false,
-  isRandom = false;
+  isRandom = false,
+  isSilent = false;
 
 const readableDuration = (seconds) => {
   let sec = Math.floor(seconds);
@@ -53,12 +56,13 @@ const playAudio = (song, group, img, uri, i) => {
   audioPlayer.addEventListener("loadedmetadata", () =>
     audioLoadedData(song, group, img)
   );
+  audioPlayer.volume = volume;
+  playerVolume.value = volume * 100;
 };
 
 const audioLoadedData = (song, group, img) => {
   songDuration.innerText = readableDuration(audioPlayer.duration);
   playerProgress.max = audioPlayer.duration;
-  audioPlayer.volume = 0.5;
   playerImg.src = img;
   playerSong.innerText = song;
   playerGroup.innerText = group;
@@ -289,16 +293,6 @@ const tmpGetData = () => {
 };
 tmpGetData(); // ___________temporary replacement of api requests
 
-playerPauseBtn.addEventListener("click", () => pauseAudio());
-
-playerNextBtn.addEventListener("click", () => playNextAudio());
-
-playerPrevBtn.addEventListener("click", () => playPrevAudio());
-
-playerRepeatBtn.addEventListener("click", () => toggleRepeat());
-
-playerRandomBtn.addEventListener("click", () => toggleRandom());
-
 const getRandomInt = (max) => {
   return Math.floor(Math.random() * Math.floor(max));
 };
@@ -377,8 +371,18 @@ const toggleRandom = () => {
   }
 };
 
-playerProgress.addEventListener("click", setProgress);
-playerVolume.addEventListener("click", setProgressVolume);
+const toggleVolume = () => {
+  isSilent = !isSilent;
+  if (isSilent) {
+    playerVolumeBtn.style.opacity = "0.3";
+    audioPlayer.volume = 0;
+    playerVolume.value = 0;
+  } else {
+    playerVolumeBtn.style.opacity = "1";
+    audioPlayer.volume = volume;
+    playerVolume.value = volume * 100;
+  }
+};
 
 function setProgress(e) {
   const width = this.clientWidth;
@@ -386,10 +390,29 @@ function setProgress(e) {
   const duration = audioPlayer.duration;
   audioPlayer.currentTime = (clickX / width) * duration;
 }
+
 function setProgressVolume(e) {
   const width = this.clientWidth;
   const clickX = e.offsetX;
   playerVolume.value = (clickX / width) * 100;
   audioPlayer.volume = playerVolume.value / 100;
-  console.log(audioPlayer.volume);
+  volume = playerVolume.value / 100;
 }
+
+playerPauseBtn.addEventListener("click", () => pauseAudio());
+
+playerNextBtn.addEventListener("click", () => playNextAudio());
+
+playerPrevBtn.addEventListener("click", () => playPrevAudio());
+
+playerRepeatBtn.addEventListener("click", () => toggleRepeat());
+
+playerRandomBtn.addEventListener("click", () => toggleRandom());
+
+playerRandomBtn.addEventListener("click", () => toggleRandom());
+
+playerVolumeBtn.addEventListener("click", () => toggleVolume());
+
+playerProgress.addEventListener("click", setProgress);
+
+playerVolume.addEventListener("click", setProgressVolume);
