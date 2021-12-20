@@ -1,10 +1,13 @@
+import { json } from "./data.js";
+
 const nav = document.querySelector(".nav");
 const playlist = document.querySelector(".playlist");
 const contentWrap = document.querySelector(".content__wrap");
 const playlistItems = document.querySelector(".playlist__items");
 const playerPauseBtn = document.querySelector(".player__pause-btn");
 const playerProgress = document.querySelector(".player__progress");
-const audioPlayer = document.querySelector(".audioPlayer");
+const playerVolume = document.querySelector(".player__progress-volume");
+const audioPlayer = document.querySelector(".audio-player");
 const currentDuration = document.querySelector(".player__current-duration");
 const songDuration = document.querySelector(".player__song-duration");
 const playerImg = document.querySelector(".player__img");
@@ -23,8 +26,8 @@ let data,
   isRandom = false;
 
 const readableDuration = (seconds) => {
-  sec = Math.floor(seconds);
-  min = Math.floor(sec / 60);
+  let sec = Math.floor(seconds);
+  let min = Math.floor(sec / 60);
   min = min >= 10 ? min : "0" + min;
   sec = Math.floor(sec % 60);
   sec = sec >= 10 ? sec : "0" + sec;
@@ -55,6 +58,7 @@ const playAudio = (song, group, img, uri, i) => {
 const audioLoadedData = (song, group, img) => {
   songDuration.innerText = readableDuration(audioPlayer.duration);
   playerProgress.max = audioPlayer.duration;
+  audioPlayer.volume = 0.5;
   playerImg.src = img;
   playerSong.innerText = song;
   playerGroup.innerText = group;
@@ -275,7 +279,15 @@ const getData = async () => {
     console.log("Request error. Please try again.", e);
   }
 };
-getData();
+// getData();  ___________save free api requests
+
+const tmpGetData = () => {
+  data = json.tracks;
+  createContentCollection(json);
+  createPlaylistCollection(json);
+  createNavCollection();
+};
+tmpGetData(); // ___________temporary replacement of api requests
 
 playerPauseBtn.addEventListener("click", () => pauseAudio());
 
@@ -306,7 +318,6 @@ const playNextAudio = () => {
   audioPlayer.pause();
   isPaused = false;
   playerPauseBtn.src = "./assets/footer/player/pause.png";
-
   if (songIndex !== data.length - 1 && !isRandom) {
     playAudio(
       data[songIndex + 1].title,
@@ -365,3 +376,20 @@ const toggleRandom = () => {
     playerRandomBtn.style.opacity = "0.3";
   }
 };
+
+playerProgress.addEventListener("click", setProgress);
+playerVolume.addEventListener("click", setProgressVolume);
+
+function setProgress(e) {
+  const width = this.clientWidth;
+  const clickX = e.offsetX;
+  const duration = audioPlayer.duration;
+  audioPlayer.currentTime = (clickX / width) * duration;
+}
+function setProgressVolume(e) {
+  const width = this.clientWidth;
+  const clickX = e.offsetX;
+  playerVolume.value = (clickX / width) * 100;
+  audioPlayer.volume = playerVolume.value / 100;
+  console.log(audioPlayer.volume);
+}
