@@ -1,5 +1,7 @@
 import { json } from "./data.js";
 
+const main = document.querySelector(".main");
+const footer = document.querySelector(".footer");
 const nav = document.querySelector(".nav");
 const playlist = document.querySelector(".playlist");
 const contentWrap = document.querySelector(".content__wrap");
@@ -18,7 +20,6 @@ const playerPrevBtn = document.querySelector(".player__previous-btn");
 const playerRepeatBtn = document.querySelector(".player__repeat");
 const playerRandomBtn = document.querySelector(".player__random");
 const playerVolumeBtn = document.querySelector(".player__volume-btn");
-const footer = document.querySelector(".footer");
 
 let data,
   songIndex,
@@ -27,15 +28,6 @@ let data,
   isRepeat = false,
   isRandom = false,
   isSilent = false;
-
-const readableDuration = (seconds) => {
-  let sec = Math.floor(seconds);
-  let min = Math.floor(sec / 60);
-  min = min >= 10 ? min : "0" + min;
-  sec = Math.floor(sec % 60);
-  sec = sec >= 10 ? sec : "0" + sec;
-  return min + ":" + sec;
-};
 
 const navCollection = [
   { src: "./assets/main/nav/top-songs.png", text: "top songs" },
@@ -48,7 +40,18 @@ const navCollection = [
   { src: "./assets/main/nav/friends.png", text: "friends" },
 ];
 
+const readableDuration = (seconds) => {
+  let sec = Math.floor(seconds);
+  let min = Math.floor(sec / 60);
+  min = min >= 10 ? min : "0" + min;
+  sec = Math.floor(sec % 60);
+  sec = sec >= 10 ? sec : "0" + sec;
+  return min + ":" + sec;
+};
+
 const playAudio = (song, group, img, uri, i) => {
+  audioPlayer.volume = volume;
+  playerVolume.value = volume * 100;
   songIndex = i;
   audioPlayer.src = uri;
   audioPlayer.play();
@@ -56,8 +59,7 @@ const playAudio = (song, group, img, uri, i) => {
   audioPlayer.addEventListener("loadedmetadata", () =>
     audioLoadedData(song, group, img)
   );
-  audioPlayer.volume = volume;
-  playerVolume.value = volume * 100;
+  main.classList.add("main_player-mode");
 };
 
 const audioLoadedData = (song, group, img) => {
@@ -109,6 +111,7 @@ const createHoverOverlay = ({ title, subtitle, images, hub }, i) => {
 
   hoverRating.classList.add("content__hover-rating");
   hoverRatingHearts.classList.add("content__hover-rating-hearts");
+  hoverRatingHeartWhite.classList.add("content__hover-rating-heart-white");
   hoverRatingHeartEmpty.classList.add("content__hover-rating-heart-empty");
   hoverRatingNumber.classList.add("content__hover-rating-number");
 
@@ -148,6 +151,7 @@ const playerTransition = () => {
   const playlistFooter = document.querySelector(".playlist__footer");
   footer.style.transform = "translate(0,0)";
   playlistFooter.style.transform = "translate(0,-80px)";
+  playlistFooter.classList.add("playlist__footer_player-mode");
 };
 
 const createPlaylistFooter = () => {
@@ -406,8 +410,6 @@ playerNextBtn.addEventListener("click", () => playNextAudio());
 playerPrevBtn.addEventListener("click", () => playPrevAudio());
 
 playerRepeatBtn.addEventListener("click", () => toggleRepeat());
-
-playerRandomBtn.addEventListener("click", () => toggleRandom());
 
 playerRandomBtn.addEventListener("click", () => toggleRandom());
 
