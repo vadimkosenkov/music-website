@@ -97,6 +97,8 @@
 .main {
   width: 100%;
   display: flex;
+  justify-content: center;
+  position: relative;
   height: calc(100vh - 80px);
 }
 .main__nav,
@@ -104,19 +106,27 @@
   background-color: #eaeaea;
   width: 15%;
   padding-top: 30px;
+  height: 100%;
 }
 .main__playlist {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   overflow: auto;
+  position: fixed;
+  right: 0;
+  height: inherit;
+}
+.main__nav {
+  position: fixed;
+  left: 0;
 }
 .nav__item {
   display: flex;
   align-items: center;
   margin-bottom: 15px;
   min-height: 50px;
-  padding-left: 15px;
+  padding: 0 15px;
   cursor: pointer;
 }
 .nav__item:hover,
@@ -292,6 +302,7 @@
   background-color: transparent;
   cursor: pointer;
   padding: 5px;
+  text-align: center;
 }
 .footer {
   position: fixed;
@@ -304,6 +315,7 @@
 }
 .player {
   display: flex;
+  z-index: 1000;
 }
 .player__song-info {
   width: 15%;
@@ -339,11 +351,11 @@
   justify-content: space-around;
   padding: 0 15px;
 }
-.player__control img {
+.player__control-wrap {
   margin: 0 10px;
   cursor: pointer;
 }
-.player__control img:hover {
+.player__control-wrap:hover img {
   transform: scale(0.85);
 }
 .player__previous-btn,
@@ -405,6 +417,7 @@
 .player__info {
   display: flex;
   flex-direction: column;
+  overflow: auto;
 }
 .player__img {
   border-radius: 50%;
@@ -424,6 +437,13 @@
   color: #b3b3b3;
   text-transform: capitalize;
 }
+.player__song,
+.player__group {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .player__progress-volume {
   border-radius: 20px;
   width: 100%;
@@ -443,6 +463,21 @@
   border-radius: 20px;
   background-color: #333745;
 }
+.main__nav_burger {
+  left: 0 !important;
+  z-index: 50;
+}
+.main__playlist_burger {
+  right: 0 !important;
+  z-index: 50;
+}
+
+.main__content,
+.main__nav,
+.main__playlist,
+.main__nav_burger {
+  transition: 0.6s;
+}
 
 @media (max-width: 1490px) {
   .nav__text {
@@ -460,7 +495,7 @@
   }
   .main__nav,
   .main__playlist {
-    padding-top: 20px;
+    padding-top: 10px;
   }
   .content__hover-track {
     font-size: 14px;
@@ -469,30 +504,35 @@
     font-size: 18px;
   }
 }
+
 @media (max-width: 1024px) {
-  .nav__text,
-  .playlist__info,
-  .header__playlist-text,
-  .player__info {
-    display: none;
+  .main__playlist {
+    right: -100%;
+    z-index: 50;
+    transition: 0.6s;
   }
-  .nav__item {
-    justify-content: center;
-    padding: 0;
-    margin: 0;
+  .main__nav {
+    left: -100%;
+    z-index: 50;
+    transition: 0.6s;
   }
-  .playlist__img,
-  .player__img {
-    display: inline;
-    height: 30px;
-    width: 30px;
-    margin: 0;
+  .main__content {
+    width: 100%;
+  }
+  .content__wrap {
+    padding: 0 0 80px 0;
+  }
+  .content__banner {
+    width: 100%;
+    padding: 0 0 15px 0;
   }
   .header__playlist-img {
     margin: 0;
   }
-  .header__logo-wrap img {
-    width: 50px;
+  .header__logo-wrap img,
+  .header__playlist img,
+  .header__playlist-text {
+    display: none;
   }
   .header {
     width: 100%;
@@ -519,55 +559,24 @@
     padding: 3px;
     width: 80%;
   }
-  .nav__img-wrap {
-    margin: 0;
-  }
-  .main__nav {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding-bottom: 80px;
-  }
-  .nav__item {
-    margin: 0;
-  }
   .content__hover-track {
     font-size: 10px;
   }
   .content__hover-rating-number {
     font-size: 16px;
   }
-  .player__control img {
-    margin: 0 5px;
-  }
-  .player__previous-btn,
-  .player__next-btn {
-    width: 13px;
-  }
-  .player__pause-btn {
-    width: 25px;
-  }
   .player__current-duration,
   .player__song-duration {
     font-size: 12px;
   }
-  .player__progress-wrap {
-    display: none;
-  }
-  .player__menu {
-    justify-content: space-around;
-  }
-
   .player__repeat,
   .player__random {
     width: 24px;
     margin: 0 7px;
   }
-  .player__volume {
-    padding: 0 5px;
-  }
   .player__volume-btn {
     width: 22px;
+    transform: translate(0, 6px);
   }
   .player__progress-volume {
     margin: 0 5px;
@@ -575,18 +584,86 @@
   .content__hover-play {
     width: 40px;
   }
+  .nav__item {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .nav__img-wrap {
+    margin: 0 0 5px 0;
+  }
+  .nav__text {
+    font-size: 8px;
+  }
+  .nav__item-endSection,
+  .nav__item,
+  .playlist__item {
+    margin-bottom: 10px;
+  }
+  .playlist__item {
+    padding: 0 5px;
+  }
+  .playlist__group,
+  .playlist__song {
+    font-size: 10px;
+    line-height: 12px;
+  }
+  .header__nav-burger-icon,
+  .header__playlist-burger-icon {
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    background-image: url("./assets/header/burger.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+  .header__nav-burger-icon:hover,
+  .header__playlist-burger-icon:hover {
+    transform: scale(0.85);
+  }
+  .player__menu {
+    flex-direction: column;
+    justify-content: center;
+  }
+  .player__progress-wrap {
+    width: 100%;
+  }
+  .player__song,
+  .player__group {
+    font-size: 10px;
+    line-height: 14px;
+  }
+  .player__song-info {
+    width: 25%;
+    padding: 0 5px 0 5px;
+  }
+  .player__progress-volume {
+    transform: rotate(-90deg);
+    width: 65px;
+    margin: 0;
+    position: fixed;
+    right: 0;
+  }
+  .player__volume {
+    justify-content: start;
+    padding: 0 30px;
+  }
 }
 
 @media (max-width: 768px) {
-  .content__wrap {
-    grid-template-rows: auto;
-    grid-template-columns: 1fr 1fr;
+  .header__playlist-text {
+    font-size: 12px;
   }
-  .player__progress-volume {
+  .player__volume-btn {
     display: none;
   }
   .player__volume {
-    justify-content: center;
+    width: 10%;
+    padding: 0;
+  }
+  .player__progress-wrap {
+    padding: 0;
   }
 }
 
@@ -597,6 +674,16 @@
   ::-webkit-input-placeholder {
     opacity: 0;
   }
+  .content__wrap {
+    grid-template-rows: auto;
+    grid-template-columns: 1fr 1fr;
+  }
+  .header__playlist-text {
+    font-size: 8px;
+  }
+  .player__progress-volume {
+    right: -10px;
+  }
 }
 
 @media (max-width: 360px) {
@@ -605,5 +692,9 @@
   }
   .playlist__footer a {
     font-size: 5px;
+  }
+  .player__current-duration,
+  .player__song-duration {
+    display: none;
   }
 }

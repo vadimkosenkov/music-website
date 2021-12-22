@@ -20,6 +20,10 @@ const playerPrevBtn = document.querySelector(".player__previous-btn");
 const playerRepeatBtn = document.querySelector(".player__repeat");
 const playerRandomBtn = document.querySelector(".player__random");
 const playerVolumeBtn = document.querySelector(".player__volume-btn");
+const navBurger = document.querySelector(".header__nav-burger-icon");
+const playlistBurger = document.querySelector(".header__playlist-burger-icon");
+const mainNav = document.querySelector(".main__nav");
+const mainPlaylist = document.querySelector(".main__playlist");
 
 let data,
   songIndex,
@@ -402,6 +406,12 @@ function setProgressVolume(e) {
   audioPlayer.volume = playerVolume.value / 100;
   volume = playerVolume.value / 100;
 }
+const toggleViewNav = () => {
+  mainNav.classList.toggle("main__nav_burger");
+};
+const toggleViewPlaylist = () => {
+  mainPlaylist.classList.toggle("main__playlist_burger");
+};
 
 playerPauseBtn.addEventListener("click", () => pauseAudio());
 
@@ -418,3 +428,7 @@ playerVolumeBtn.addEventListener("click", () => toggleVolume());
 playerProgress.addEventListener("click", setProgress);
 
 playerVolume.addEventListener("click", setProgressVolume);
+
+navBurger.addEventListener("click", () => toggleViewNav());
+
+playlistBurger.addEventListener("click", () => toggleViewPlaylist());
