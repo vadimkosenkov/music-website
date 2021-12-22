@@ -446,7 +446,7 @@
 
 .player__progress-volume {
   border-radius: 20px;
-  width: 100%;
+  width: 100px;
   height: 8px;
   margin: 0 10px;
   cursor: pointer;
@@ -664,6 +664,11 @@
   }
   .player__progress-wrap {
     padding: 0;
+  }
+  .playlist__group,
+  .playlist__song {
+    font-size: 6px;
+    line-height: 8px;
   }
 }
 
